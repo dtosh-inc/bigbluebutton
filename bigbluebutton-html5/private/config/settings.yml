@@ -479,9 +479,9 @@ public:
     enabled: true
     url: ETHERPAD_HOST
   layout:
-    autoSwapLayout: false
-    hidePresentation: false
-    showParticipantsOnLogin: true
+    autoSwapLayout: true
+    hidePresentation: true
+    showParticipantsOnLogin: false
   media:
     audio:
       #
