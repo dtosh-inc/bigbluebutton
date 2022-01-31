@@ -1,0 +1,31 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches: [ feat/actions ]
+  pull_request:
+    branches: [ feat/actions ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+
+    strategy:
+      matrix:
+        meteor: [2.5.3]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup meteor
+      uses: meteorengineer/setup-meteor@v1.0.3
+      with:
+          meteor-release: ${{ matrix.meteor }}
+    - name: Meteor install
+      run: meteor npm install
+      working-directory: ./bigbluebutton-html5
+    - name: Buid
+      run: meteor build --server-only ./bigbluebutton-html5/meteorbundle
+    - name: test
+      run: ls ./bigbluebutton-html5/meteorbundle
+
