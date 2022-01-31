@@ -25,7 +25,7 @@ jobs:
       run: meteor npm install
       working-directory: ./bigbluebutton-html5
     - name: Buid
-      run: meteor build --server-only ./bigbluebutton-html5/meteorbundle
+      run: meteor build --server-only ./meteorbundle
     - name: test
-      run: ls ./bigbluebutton-html5/meteorbundle
+      run: ls ./meteorbundle
 
