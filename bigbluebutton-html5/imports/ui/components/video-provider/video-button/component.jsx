@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import Button from '/imports/ui/components/button/component';
 import ButtonEmoji from '/imports/ui/components/button/button-emoji/ButtonEmoji';
+import CustomButton from '../../custom-button/component';
 import VideoService from '../service';
 import { defineMessages, injectIntl } from 'react-intl';
 import { styles } from './styles';
@@ -58,6 +58,7 @@ const JoinVideoButton = ({
   disableReason,
   mountVideoPreview,
   forceMountVideoPreview,
+  sidebarNavigation,
 }) => {
   const { isMobile } = deviceInfo;
   const shouldEnableWebcamSelectorButton = ENABLE_WEBCAM_SELECTOR_BUTTON
@@ -107,18 +108,17 @@ const JoinVideoButton = ({
 
   return (
     <div className={styles.offsetBottom}>
-      <Button
-        label={label}
-        data-test={hasVideoStream ? 'leaveVideo' : 'joinVideo'}
-        className={cx(hasVideoStream || styles.btn)}
-        onClick={handleOnClick}
-        hideLabel
-        color={hasVideoStream ? 'primary' : 'default'}
-        icon={hasVideoStream ? 'video' : 'video_off'}
-        ghost={!hasVideoStream}
+      <CustomButton
+        className={cx(!(sidebarNavigation.isOpen && !hasVideoStream) || styles.btn)}
         size="lg"
-        circle
+        color={hasVideoStream ? 'primary' : 'dark'}
+        ghost={!hasVideoStream}
+        isActive={hasVideoStream}
         disabled={!!disableReason}
+        label={hasVideoStream ? 'カメラオフ' : 'カメラオン'}
+        icon={hasVideoStream ? 'video' : 'video_off'}
+        onClick={handleOnClick}
+        data-test={hasVideoStream ? 'leaveVideo' : 'joinVideo'}
       />
       {renderEmojiButton()}
     </div>

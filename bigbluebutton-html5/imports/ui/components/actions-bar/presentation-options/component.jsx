@@ -59,7 +59,7 @@ const PresentationOptionsContainer = ({
       aria-label={intl.formatMessage(isLayoutSwapped ? intlMessages.restorePresentationLabel : intlMessages.minimizePresentationLabel)}
       aria-describedby={intl.formatMessage(isLayoutSwapped ? intlMessages.restorePresentationDesc : intlMessages.minimizePresentationDesc)}
       description={intl.formatMessage(isLayoutSwapped ? intlMessages.restorePresentationDesc : intlMessages.minimizePresentationDesc)}
-      color={!isLayoutSwapped ? "primary" : "default"}
+      color={!isLayoutSwapped ? "primary" : "dark"}
       hideLabel
       circle
       size="lg"

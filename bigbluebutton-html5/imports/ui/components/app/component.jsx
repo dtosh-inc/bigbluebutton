@@ -396,7 +396,6 @@ class App extends Component {
             left: actionsBarStyle.left,
             height: actionsBarStyle.height,
             width: actionsBarStyle.width,
-            padding: actionsBarStyle.padding,
           }
         }
       >

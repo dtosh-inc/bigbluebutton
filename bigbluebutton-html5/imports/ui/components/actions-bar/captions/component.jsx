@@ -29,7 +29,7 @@ const CaptionsButton = ({ intl, isActive, handleOnClick }) => (
     className={cx(isActive || styles.btn)}
     icon="closed_caption"
     label={intl.formatMessage(isActive ? intlMessages.stop : intlMessages.start)}
-    color={isActive ? 'primary' : 'default'}
+    color={isActive ? 'primary' : 'dark'}
     ghost={!isActive}
     hideLabel
     circle

@@ -11,24 +11,6 @@
   }
 
   .muteToggle {
-    margin-right: var(--sm-padding-x);
-    margin-left: 0;
-
-    @include mq($small-only) {
-      margin-right: var(--sm-padding-y);
-    }
-
-    [dir="rtl"] & {
-      margin-left: var(--sm-padding-x);
-      margin-right: 0;
-
-      @include mq($small-only) {
-        margin-left: var(--sm-padding-y);
-      }
-    }
-  }
-  
-  > :last-child {
     margin-left: var(--sm-padding-x);
     margin-right: 0;
 
@@ -37,11 +19,38 @@
     }
 
     [dir="rtl"] & {
-      margin-left: 0;
       margin-right: var(--sm-padding-x);
+      margin-left: 0;
 
       @include mq($small-only) {
         margin-right: var(--sm-padding-y);
+      }
+    }
+
+    > span:first-of-type {
+      margin-right: 0 !important;
+    }
+
+    > span:last-of-type {
+      min-width: 7rem;
+      margin: 0 !important;
+    }
+  }
+  
+  > :first-child {
+    margin-right: var(--sm-padding-x);
+    margin-left: 0;
+
+    @include mq($small-only) {
+      margin-right: var(--sm-padding-y);
+    }
+
+    [dir="rtl"] & {
+      margin-right: 0;
+      margin-left: var(--sm-padding-x);
+
+      @include mq($small-only) {
+        margin-left: var(--sm-padding-y);
       }
     }
   }
@@ -54,9 +63,8 @@
 }
 
 .glow {
-  border-radius: 50%;
-  
-  :global(.animationsEnabled) & {
+  :global(.animationsEnabled) & span:first-child {
+    border-radius: 50%;
     animation: pulse 1s infinite ease-in;
   }
 

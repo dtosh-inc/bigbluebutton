@@ -4,6 +4,7 @@ import cx from 'classnames';
 import { defineMessages, injectIntl } from 'react-intl';
 import deviceInfo from '/imports/utils/deviceInfo';
 import Button from '/imports/ui/components/button/component';
+import CustomButton from '../../custom-button/component';
 import getFromUserSettings from '/imports/ui/services/users-settings';
 import withShortcutHelper from '/imports/ui/components/shortcut-help/service';
 import InputStreamLiveSelectorContainer from './input-stream-live-selector/container';
@@ -80,7 +81,7 @@ class AudioControls extends PureComponent {
         aria-label={intl.formatMessage(intlMessages.joinAudio)}
         label={intl.formatMessage(intlMessages.joinAudio)}
         data-test="joinAudio"
-        color="default"
+        color="dark"
         ghost
         icon="no_audio"
         size="lg"
@@ -128,7 +129,7 @@ class AudioControls extends PureComponent {
           : intl.formatMessage(intlMessages.joinAudio)}
         label={inAudio ? intl.formatMessage(intlMessages.leaveAudio)
           : intl.formatMessage(intlMessages.joinAudio)}
-        color={inAudio ? 'primary' : 'default'}
+        color={inAudio ? 'primary' : 'dark'}
         ghost={!inAudio}
         icon={joinIcon}
         size="lg"
@@ -180,24 +181,28 @@ class AudioControls extends PureComponent {
       inputStream,
       isViewer,
       isPresenter,
+      sidebarNavigation,
     } = this.props;
 
     const label = muted ? intl.formatMessage(intlMessages.unmuteAudio)
       : intl.formatMessage(intlMessages.muteAudio);
 
     const toggleMuteBtn = (
-      <Button
-        className={cx(styles.muteToggle, !talking || styles.glow, !muted || styles.btn)}
-        onClick={handleToggleMuteMicrophone}
-        disabled={disable}
-        hideLabel
-        label={label}
-        aria-label={label}
-        color={!muted ? 'primary' : 'default'}
-        ghost={muted}
-        icon={muted ? 'mute' : 'unmute'}
+      <CustomButton
+        className={cx(
+          styles.muteToggle,
+          !talking || styles.glow,
+          !(sidebarNavigation.isOpen && muted) || styles.btn,
+        )}
         size="lg"
-        circle
+        color={!muted ? 'primary' : 'dark'}
+        ghost={muted}
+        isActive={!muted}
+        disabled={disable}
+        label={!muted ? 'ミュート' : 'ミュート解除'}
+        aria-label={label}
+        icon={muted ? 'mute' : 'unmute'}
+        onClick={handleToggleMuteMicrophone}
         accessKey={shortcuts.togglemute}
       />
     );
@@ -213,10 +218,10 @@ class AudioControls extends PureComponent {
           }}
           />
         ) : null}
-        {showMute && isVoiceUser ? toggleMuteBtn : null}
         {
           this.renderJoinLeaveButton()
         }
+        {showMute && isVoiceUser ? toggleMuteBtn : null}
       </span>
     );
   }

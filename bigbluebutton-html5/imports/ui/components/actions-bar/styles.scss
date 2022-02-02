@@ -31,6 +31,13 @@
   flex-direction: row;
 }
 
+.actionsbar {
+  display: flex;
+  align-items: center;
+  border-radius: 0.6rem;
+  background-color: var(--color-white);
+}
+
 .right {
   justify-content: center;
   @include mq($small-only) {
@@ -114,8 +121,8 @@
 .btn {
   span {
     box-shadow: none;
-    background-color: transparent !important;
-    border-color: var(--color-white) !important;
+    border-color: var(--color-primary) !important;
+    background-color: var(--color-white-dark) !important;
   }
 }
 

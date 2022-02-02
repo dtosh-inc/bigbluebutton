@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import { defineMessages, injectIntl } from 'react-intl';
 import deviceInfo from '/imports/utils/deviceInfo';
 import browserInfo from '/imports/utils/browserInfo';
-import Button from '/imports/ui/components/button/component';
+import CustomButton from '../../custom-button/component';
 import logger from '/imports/startup/client/logger';
 import { notify } from '/imports/ui/services/notification';
-import cx from 'classnames';
 import Modal from '/imports/ui/components/modal/simple/component';
 import { withModalMounter } from '../../modal/service';
 import { styles } from '../styles';
@@ -122,6 +122,7 @@ const ScreenshareButton = ({
   isMeteorConnected,
   screenshareDataSavingSetting,
   mountModal,
+  sidebarNavigation,
 }) => {
   // This is the failure callback that will be passed to the /api/screenshare/kurento.js
   // script on the presenter's call
@@ -171,18 +172,16 @@ const ScreenshareButton = ({
 
   return shouldAllowScreensharing
     ? (
-      <Button
-        className={cx(isVideoBroadcasting || styles.btn)}
-        disabled={(!isMeteorConnected && !isVideoBroadcasting) || !screenshareDataSavingSetting}
-        icon={isVideoBroadcasting ? 'desktop' : 'desktop_off'}
-        data-test={isVideoBroadcasting ? 'stopScreenShare' : 'startScreenShare'}
-        label={intl.formatMessage(vLabel)}
-        description={intl.formatMessage(vDescr)}
-        color={isVideoBroadcasting ? 'primary' : 'default'}
-        ghost={!isVideoBroadcasting}
-        hideLabel
-        circle
+      <CustomButton
+        className={cx(!(sidebarNavigation.isOpen && !isVideoBroadcasting) || styles.btn)}
+        id={isVideoBroadcasting ? 'unshare-screen-button' : 'share-screen-button'}
         size="lg"
+        color={isVideoBroadcasting ? 'primary' : 'dark'}
+        ghost={!isVideoBroadcasting}
+        isActive={isVideoBroadcasting}
+        disabled={(!isMeteorConnected && !isVideoBroadcasting) || !screenshareDataSavingSetting}
+        label="画面共有"
+        icon={isVideoBroadcasting ? 'desktop' : 'desktop_off'}
         onClick={isVideoBroadcasting
           ? screenshareHasEnded
           : () => {
@@ -192,7 +191,8 @@ const ScreenshareButton = ({
               shareScreen(handleFailure);
             }
           }}
-        id={isVideoBroadcasting ? 'unshare-screen-button' : 'share-screen-button'}
+        data-test={isVideoBroadcasting ? 'stopScreenShare' : 'startScreenShare'}
+        description={intl.formatMessage(vDescr)}
       />
     ) : null;
 };

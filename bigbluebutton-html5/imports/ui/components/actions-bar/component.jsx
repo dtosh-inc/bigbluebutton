@@ -35,6 +35,7 @@ class ActionsBar extends PureComponent {
       currentUser,
       shortcuts,
       layoutContextDispatch,
+      sidebarNavigation,
       actionsBarStyle,
       isOldMinimizeButtonEnabled,
     } = this.props;
@@ -44,7 +45,7 @@ class ActionsBar extends PureComponent {
         className={styles.actionsbar}
         style={
           {
-            height: actionsBarStyle.innerHeight,
+            height: (actionsBarStyle.innerHeight + actionsBarStyle.padding * 2) || 'auto',
           }
         }
       >
@@ -69,15 +70,16 @@ class ActionsBar extends PureComponent {
             : null}
         </div>
         <div className={styles.center}>
-          <AudioControlsContainer />
+          <AudioControlsContainer {...{ sidebarNavigation }} />
           {enableVideo
             ? (
-              <JoinVideoOptionsContainer />
+              <JoinVideoOptionsContainer {...{ sidebarNavigation }} />
             )
             : null}
           <ScreenshareButtonContainer {...{
             amIPresenter,
             isMeteorConnected,
+            sidebarNavigation,
           }}
           />
         </div>
@@ -107,7 +109,7 @@ class ActionsBar extends PureComponent {
                   }`,
                 })}
                 accessKey={shortcuts.raisehand}
-                color={currentUser.emoji === 'raiseHand' ? 'primary' : 'default'}
+                color={currentUser.emoji === 'raiseHand' ? 'primary' : 'dark'}
                 data-test={currentUser.emoji === 'raiseHand' ? 'lowerHandLabel' : 'raiseHandLabel'}
                 ghost={currentUser.emoji !== 'raiseHand'}
                 className={cx(currentUser.emoji === 'raiseHand' || styles.btn)}

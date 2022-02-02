@@ -21,6 +21,8 @@
 }
 
 .offsetBottom {
+  display: flex;
+
   :global(.MuiPaper-root) {
     top: auto !important;
     bottom: 4rem !important;
