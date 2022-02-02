@@ -27,6 +27,12 @@ jobs:
     - name: Buid
       run: meteor build --server-only ./meteorbundle
       working-directory: ./bigbluebutton-html5
-    - name: res
-      run: ls -al ./meteorbundle
-      working-directory: ./bigbluebutton-html5
+    - name: Deploy
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.KEY }}
+        port: ${{ secrets.PORT }}
+        source: "bigbluebutton-html5/meteorbundle/*.tar.gz"
+        target: "/usr/share/meteor"
