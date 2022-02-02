@@ -34,7 +34,7 @@ jobs:
         name: result
     - name: Deploy
       run: |
-        echo ${{ secrets.KEY }} > secret_key
+        echo "${{ secrets.KEY }}" > secret_key
         chmod 600 secret_key
         scp -o "StrictHostKeyChecking=no" -i secret_key bigbluebutton-html5.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
         ssh -o "StrictHostKeyChecking=no" -i secret_key ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'echo ${{ secrets.PASS }} | sudo -S tar -zxf ~/bigbluebutton-html5.tar.gz -C /usr/share/meteor && rm -f ~/bigbluebutton-html5.tar.gz'
