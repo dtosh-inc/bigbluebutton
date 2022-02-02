@@ -8,21 +8,14 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-18.04
-
-    strategy:
-      matrix:
-        meteor: [2.5.3]
 
     steps:
     - uses: actions/checkout@v2
     - name: Setup meteor
       uses: meteorengineer/setup-meteor@v1.0.3
-      with:
-          meteor-release: ${{ matrix.meteor }}
     - name: Meteor install
-      run: meteor update && meteor npm install
+      run: meteor npm install
       working-directory: ./bigbluebutton-html5
     - name: Buid
       run: meteor build --server-only ./meteorbundle
@@ -46,5 +39,5 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
-        source: "bigbluebutton-html5/meteorbundle/bigbluebutton-html5.tar.gz"
+        source: "bigbluebutton-html5.tar.gz"
         target: "/usr/share/meteor"
