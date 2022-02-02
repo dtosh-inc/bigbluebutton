@@ -3,6 +3,7 @@
 
   --color-white: #FFF;
   --color-off-white: #F3F6F9;
+  --color-white-dark: #EEE;
 
   --color-black: #000000;
   --color-gray: #4E5A66;
@@ -42,8 +43,8 @@
 
   --color-white-with-transparency: #ffffff40;
 
-  --loader-bg: var(--color-gray-dark);
-  --loader-bullet: var(--color-white);
+  --loader-bg: var(--color-off-white);
+  --loader-bullet: var(--color-gray-dark);
   --user-list-bg: var(--color-off-white);
 
   --unread-messages-bg: var(--color-danger);
