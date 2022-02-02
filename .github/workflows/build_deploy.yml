@@ -32,12 +32,9 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: result
-    - name: Setup SSH Keys and known_hosts
-      run: |
-        ssh-agent -a /tmp/ssh_agent.sock > /dev/null
-        eval "$(ssh-agent)"
-        ssh-add - <<< "${{ secrets.KEY }}"
     - name: Deploy
       run: |
-        scp -o "StrictHostKeyChecking=no" bigbluebutton-html5.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
-        ssh -o "StrictHostKeyChecking=no" ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'echo ${{ secrets.PASS }} | sudo -S tar -zxf ~/bigbluebutton-html5.tar.gz -C /usr/share/meteor && rm -f ~/bigbluebutton-html5.tar.gz'
+        echo ${{ secrets.KEY }} > secret_key
+        chmod 600 secret_key
+        scp -o "StrictHostKeyChecking=no" -i secret_key bigbluebutton-html5.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
+        ssh -o "StrictHostKeyChecking=no" -i secret_key ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'echo ${{ secrets.PASS }} | sudo -S tar -zxf ~/bigbluebutton-html5.tar.gz -C /usr/share/meteor && rm -f ~/bigbluebutton-html5.tar.gz'
