@@ -277,8 +277,6 @@
   .buttonWrapper:focus:not([aria-disabled="true"]) & {
     color: $color;
     background-color: $background;
-    background-clip: padding-box;
-    box-shadow: 0 0 0 var(--border-size) $border;
   }
 
   &:hover,
@@ -299,8 +297,6 @@
   .buttonWrapper:focus & {
     color: $color;
     background-color: $variant;
-    background-clip: padding-box;
-    box-shadow: 0 0 0 var(--border-size-large) $color;
   }
 
   &:hover,
