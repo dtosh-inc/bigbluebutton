@@ -288,7 +288,8 @@ class SettingsDropdown extends PureComponent {
             label={intl.formatMessage(intlMessages.optionsLabel)}
             icon="more"
             data-test="optionsButton"
-            ghost
+            color="primary"
+            size="lg"
             circle
             hideLabel
             className={isDropdownOpen ? styles.hideDropdownButton : styles.btn}

@@ -48,8 +48,7 @@
 }
 
 .presentationTitle {
-  font-weight: 200;
-  color: var(--color-white);
+  font-weight: normal;
   font-size: var(--font-size-base);
   margin: 0;
   padding: 0;
@@ -75,7 +74,7 @@
     bottom: var(--border-size);
     right: 3px;
     background-color: var(--color-danger);
-    border: var(--border-size) solid var(--color-gray-dark);
+    border: var(--border-size) solid var(--color-white);
   }
 }
 
@@ -88,6 +87,8 @@
   position: absolute;
   font-size: var(--arrow-size);
   color: var(--color-white);
+  pointer-events: none;
+  z-index: 4;
 }
 
 .arrowLeft {
@@ -107,15 +108,6 @@
   }
 
   z-index: 3;
-
-  &:hover,
-  &:focus {
-    span {
-      background-color: transparent !important;
-      color: var(--color-white) !important;
-      opacity: .75;
-    }
-  }
 }
 
 .dropdown{

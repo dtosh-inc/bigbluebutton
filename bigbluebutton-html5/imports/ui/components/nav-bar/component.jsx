@@ -224,7 +224,6 @@ class NavBar extends Component {
               && <Icon iconName="left_arrow" className={styles.arrowLeft} />}
             <Button
               onClick={this.handleToggleUserList}
-              ghost
               circle
               hideLabel
               data-test={hasNotification ? 'hasUnreadMessages' : null}
@@ -232,6 +231,8 @@ class NavBar extends Component {
               tooltipLabel={intl.formatMessage(intlMessages.toggleUserListLabel)}
               aria-label={ariaLabel}
               icon="user"
+              color="primary"
+              size="lg"
               className={cx(toggleBtnClasses)}
               aria-expanded={isExpanded}
               accessKey={TOGGLE_USERLIST_AK}

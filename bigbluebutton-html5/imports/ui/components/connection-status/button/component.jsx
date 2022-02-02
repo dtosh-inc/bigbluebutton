@@ -86,7 +86,7 @@ class ConnectionStatusButton extends PureComponent {
           label={intl.formatMessage(intlMessages.label)}
           hideLabel
           aria-label={intl.formatMessage(intlMessages.description)}
-          size="sm"
+          size="lg"
           color={color}
           circle
           onClick={() => mountModal(<ConnectionStatusModalContainer />)}

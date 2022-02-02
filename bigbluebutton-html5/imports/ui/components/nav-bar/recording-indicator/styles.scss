@@ -11,18 +11,16 @@
 
 %recordingControl {
   display: flex;
-  border-radius: 2em 2em;
+  border-radius: 0.6em;
   align-items: center;
 
   span {
     border: none;
     box-shadow: none;
     background-color: transparent !important;
-    color: var(--color-white) !important;
   }
 
   &:hover {
-    color: var(--color-white) !important;
     cursor: pointer;
   }
 
@@ -39,6 +37,10 @@
   background-color: var(--color-primary);
   border: var(--border-size-large) solid var(--color-primary);
 
+  span {
+    color: var(--color-white) !important;
+  }
+
   &:focus {
     background-clip: padding-box;
     border: var(--border-size-large) solid transparent;
@@ -49,11 +51,15 @@
   @extend %recordingControl;
 
   padding: 7px;
-  border: var(--border-size-small) solid var(--color-white);
+  border: var(--border-size) solid var(--color-primary);
+
+  span {
+    color: var(--color-gray-light);
+  }
   
   &:focus {
     padding: 5px;
-    border: var(--border-size-large) solid var(--color-white);
+    border: var(--border-size-large) solid var(--color-primary);
     box-shadow: none;
   }
 }
@@ -63,7 +69,7 @@
   flex-direction: column;
   justify-content: center;
   font-weight: 200;
-  color: var(--color-white);
+  color: var(--color-primary);
   font-size: var(--font-size-base);
   padding: 0;
   margin-right: 0;
