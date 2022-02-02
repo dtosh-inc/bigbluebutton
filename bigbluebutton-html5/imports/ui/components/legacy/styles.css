@@ -3,9 +3,9 @@
 */
 
 .browserWarning {
-  border: 5px solid #F3F6F9;
+  border: 5px solid #06172A;
   border-radius: 0.5rem;
-  color: #F3F6F9;
+  color: #06172A;
   text-align: center;
   width:500px;
   position:fixed;
