@@ -27,6 +27,18 @@ jobs:
     - name: Buid
       run: meteor build --server-only ./meteorbundle
       working-directory: ./bigbluebutton-html5
+    - uses: actions/upload-artifact@v2.3.1
+      with:
+        name: result
+        path: bigbluebutton-html5/meteorbundle/*.tar.gz
+        
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/download-artifact@v2.1.0
+      with:
+        name: result
     - name: Deploy
       uses: appleboy/scp-action@master
       with:
