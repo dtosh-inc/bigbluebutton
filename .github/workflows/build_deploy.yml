@@ -18,7 +18,7 @@ jobs:
       run: meteor npm install
       working-directory: ./bigbluebutton-html5
     - name: Buid
-      run: meteor build ./meteorbundle --architecture os.linux.x86_64 --allow-superuser --directory
+      run: meteor build ./meteorbundle --architecture os.linux.x86_64 --allow-superuser
       working-directory: ./bigbluebutton-html5
     - uses: actions/upload-artifact@v2
       with:
