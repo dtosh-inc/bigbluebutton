@@ -1,0 +1,41 @@
+@import "/imports/ui/components/button/styles.scss";
+
+.customButton {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 1rem;
+  border: var(--border-size-large) solid var(--color-primary);
+  background-color: var(--color-white-dark);
+  cursor: pointer;
+
+  span {
+    border: none !important;
+    background-color: transparent !important;
+    box-shadow: none;
+  }
+
+  & > span {
+    margin: 0 calc(var(--lg-padding-x) / 2) !important;
+  }
+
+  & > span:first-child {
+    padding: var(--sm-padding-y);
+  }
+
+  .label {
+    margin-left: 0 !important;
+    color: var(--color-gray-light);
+  }
+
+  &:hover span {
+    opacity: .75;
+  }
+}
+
+.customButtonActive {
+  background-color: var(--btn-primary-bg);
+
+  .label {
+    color: var(--color-white);
+  }
+}
