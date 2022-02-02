@@ -32,7 +32,7 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.KEY }}
+        key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         source: "bigbluebutton-html5/meteorbundle/*.tar.gz"
         target: "/usr/share/meteor"
