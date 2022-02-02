@@ -3,7 +3,6 @@ import { defineMessages, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { withModalMounter } from '/imports/ui/components/modal/service';
 import EndMeetingConfirmationContainer from '/imports/ui/components/end-meeting-confirmation/container';
-import { makeCall } from '/imports/ui/services/api';
 import AboutContainer from '/imports/ui/components/about/container';
 import SettingsMenuContainer from '/imports/ui/components/settings/container';
 import Button from '/imports/ui/components/button/component';
@@ -36,10 +35,6 @@ const intlMessages = defineMessages({
     id: 'app.navBar.settingsDropdown.aboutDesc',
     description: 'Describes about option',
   },
-  leaveSessionLabel: {
-    id: 'app.navBar.settingsDropdown.leaveSessionLabel',
-    description: 'Leave session button label',
-  },
   fullscreenDesc: {
     id: 'app.navBar.settingsDropdown.fullscreenDesc',
     description: 'Describes fullscreen option',
@@ -47,10 +42,6 @@ const intlMessages = defineMessages({
   settingsDesc: {
     id: 'app.navBar.settingsDropdown.settingsDesc',
     description: 'Describes settings option',
-  },
-  leaveSessionDesc: {
-    id: 'app.navBar.settingsDropdown.leaveSessionDesc',
-    description: 'Describes leave session option',
   },
   exitFullscreenDesc: {
     id: 'app.navBar.settingsDropdown.exitFullscreenDesc',
@@ -120,10 +111,6 @@ class SettingsDropdown extends PureComponent {
       isFullscreen: false,
     };
 
-    // Set the logout code to 680 because it's not a real code and can be matched on the other side
-    this.LOGOUT_CODE = '680';
-
-    this.leaveSession = this.leaveSession.bind(this);
     this.onFullscreenChange = this.onFullscreenChange.bind(this);
   }
 
@@ -176,13 +163,6 @@ class SettingsDropdown extends PureComponent {
     );
   }
 
-  leaveSession() {
-    makeCall('userLeftMeeting');
-    // we don't check askForFeedbackOnLogout here,
-    // it is checked in meeting-ended component
-    Session.set('codeError', this.LOGOUT_CODE);
-  }
-
   renderMenuItems() {
     const {
       intl, mountModal, amIModerator, isBreakoutRoom, isMeteorConnected,
@@ -193,7 +173,6 @@ class SettingsDropdown extends PureComponent {
     const {
       showHelpButton: helpButton,
       helpLink,
-      allowLogout: allowLogoutSetting,
     } = Meteor.settings.public.app;
 
     this.menuItems = [];
@@ -250,20 +229,6 @@ class SettingsDropdown extends PureComponent {
           label: intl.formatMessage(intlMessages.endMeetingLabel),
           // description: intl.formatMessage(intlMessages.endMeetingDesc),
           onClick: () => mountModal(<EndMeetingConfirmationContainer />),
-        },
-      );
-    }
-
-    if (allowLogoutSetting && isMeteorConnected) {
-      this.menuItems.push(
-        {
-          key: 'list-item-logout',
-          dataTest: 'logout',
-          icon: 'logout',
-          label: intl.formatMessage(intlMessages.leaveSessionLabel),
-          // description: intl.formatMessage(intlMessages.leaveSessionDesc),
-          className: styles.leaveMeetingButton,
-          onClick: () => this.leaveSession(),
         },
       );
     }

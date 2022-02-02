@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
+import { defineMessages } from 'react-intl';
+import { makeCall } from '/imports/ui/services/api';
 import Button from '/imports/ui/components/button/component';
 import CaptionsButtonContainer from '/imports/ui/components/actions-bar/captions/container';
 import withShortcutHelper from '/imports/ui/components/shortcut-help/service';
@@ -9,6 +11,17 @@ import ScreenshareButtonContainer from '/imports/ui/components/actions-bar/scree
 import AudioControlsContainer from '../audio/audio-controls/container';
 import JoinVideoOptionsContainer from '../video-provider/video-button/container';
 import PresentationOptionsContainer from './presentation-options/component';
+
+const intlMessages = defineMessages({
+  leaveSessionLabel: {
+    id: 'app.navBar.settingsDropdown.leaveSessionLabel',
+    description: 'Leave session button label',
+  },
+  leaveSessionDesc: {
+    id: 'app.navBar.settingsDropdown.leaveSessionDesc',
+    description: 'Describes leave session option',
+  },
+});
 
 class ActionsBar extends PureComponent {
   render() {
@@ -39,6 +52,20 @@ class ActionsBar extends PureComponent {
       actionsBarStyle,
       isOldMinimizeButtonEnabled,
     } = this.props;
+
+    const {
+      allowLogout: allowLogoutSetting,
+    } = Meteor.settings.public.app;
+
+    // Set the logout code to 680 because it's not a real code and can be matched on the other side
+    const LOGOUT_CODE = '680';
+
+    const leaveSession = () => {
+      makeCall('userLeftMeeting');
+      // we don't check askForFeedbackOnLogout here,
+      // it is checked in meeting-ended component
+      Session.set('codeError', LOGOUT_CODE);
+    };
 
     return (
       <div
@@ -126,6 +153,22 @@ class ActionsBar extends PureComponent {
             )
             : null}
         </div>
+        {(allowLogoutSetting && isMeteorConnected)
+          ? (
+            <Button
+              className={styles.logout}
+              icon="logout"
+              data-test="logout"
+              color="danger"
+              circle
+              size="lg"
+              hideLabel
+              label={intl.formatMessage(intlMessages.leaveSessionLabel)}
+              // description={intl.formatMessage(intlMessages.leaveSessionDesc)}
+              onClick={leaveSession}
+            />
+          )
+          : null}
       </div>
     );
   }
