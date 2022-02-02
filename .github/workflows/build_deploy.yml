@@ -22,10 +22,10 @@ jobs:
     - name: cp files
       run: |
         cp ./build/packages-template/bbb-html5/mongod_start_pre.sh ./bigbluebutton-html5/meteorbundle/bundle/mongod_start_pre.sh
+        cp ./build/packages-template/bbb-html5/bionic/mongo-ramdisk.conf ./bigbluebutton-html5/meteorbundle/bundle/mongo-ramdisk.conf
         cp ./build/packages-template/bbb-html5/bionic/systemd_start.sh ./bigbluebutton-html5/meteorbundle/bundle/systemd_start.sh
         cp ./build/packages-template/bbb-html5/bionic/systemd_start_frontend.sh ./bigbluebutton-html5/meteorbundle/bundle/systemd_start_frontend.sh
         cp ./build/packages-template/bbb-html5/bionic/workers-start.sh ./bigbluebutton-html5/meteorbundle/bundle/workers-start.sh
-        cp ./build/packages-template/bbb-html5/mongo-ramdisk.conf ./bigbluebutton-html5/meteorbundle/bundle/mongo-ramdisk.conf
     - name: create config
       run: |
         tee ./bigbluebutton-html5/meteorbundle/bundle/bbb-html5-with-roles.conf >/dev/null <<HERE
