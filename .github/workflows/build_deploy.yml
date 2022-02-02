@@ -35,6 +35,7 @@ jobs:
     - name: Setup SSH Keys and known_hosts
       run: |
         ssh-agent -a /tmp/ssh_agent.sock > /dev/null
+        eval "$(ssh-agent)"
         ssh-add - <<< "${{ secrets.KEY }}"
     - name: Deploy
       run: |
