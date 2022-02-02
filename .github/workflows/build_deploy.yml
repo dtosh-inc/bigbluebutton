@@ -44,7 +44,6 @@ jobs:
         chmod +x ./bigbluebutton-html5/meteorbundle/bundle/systemd_start.sh
         chmod +x ./bigbluebutton-html5/meteorbundle/bundle/systemd_start_frontend.sh
         chmod +x ./bigbluebutton-html5/meteorbundle/bundle/workers-start.sh
-        chown -R meteor:meteor ./bigbluebutton-html5/meteorbundle/
     - run: tar -zcf ./bigbluebutton-html5/meteorbundle/bigbluebutton-html5.tar.gz ./bigbluebutton-html5/meteorbundle/bundle/
     - uses: actions/upload-artifact@v2
       with:
