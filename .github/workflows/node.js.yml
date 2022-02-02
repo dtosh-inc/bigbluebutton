@@ -27,3 +27,6 @@ jobs:
     - name: Buid
       run: meteor build --server-only ./meteorbundle
       working-directory: ./bigbluebutton-html5
+    - name: res
+      run: ls -al ./meteorbundle
+      working-directory: ./bigbluebutton-html5
