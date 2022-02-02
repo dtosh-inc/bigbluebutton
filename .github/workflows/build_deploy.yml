@@ -39,5 +39,5 @@ jobs:
         ssh-add - <<< "${{ secrets.KEY }}"
     - name: Deploy
       run: |
-        scp bigbluebutton-html5.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
-        ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'echo ${{ secrets.PASS }} | sudo -S tar -zxf ~/bigbluebutton-html5.tar.gz -C /usr/share/meteor && rm -f ~/bigbluebutton-html5.tar.gz'
+        scp -o "StrictHostKeyChecking=no" bigbluebutton-html5.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
+        ssh -o "StrictHostKeyChecking=no" ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'echo ${{ secrets.PASS }} | sudo -S tar -zxf ~/bigbluebutton-html5.tar.gz -C /usr/share/meteor && rm -f ~/bigbluebutton-html5.tar.gz'
