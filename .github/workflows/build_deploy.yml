@@ -66,4 +66,4 @@ jobs:
     - name: Deploy
       run: |
         scp -o "StrictHostKeyChecking=no" -i secret_key bigbluebutton-html5.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
-        ssh -o "StrictHostKeyChecking=no" -i secret_key ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'echo ${{ secrets.PASS }} | sudo -S tar -zxf ~/bigbluebutton-html5.tar.gz -C /usr/share/meteor && (cd /usr/share/meteor/bundle/programs/server && sudo npm i) && rm -f ~/bigbluebutton-html5.tar.gz && sudo systemctl restart bbb-html5'
+        ssh -t -o "StrictHostKeyChecking=no" -i secret_key ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'echo ${{ secrets.PASS }} | sudo -S tar -zxf ~/bigbluebutton-html5.tar.gz -C /usr/share/meteor && (cd /usr/share/meteor/bundle/programs/server && sudo npm i) && rm -f ~/bigbluebutton-html5.tar.gz && sudo systemctl restart bbb-html5'
