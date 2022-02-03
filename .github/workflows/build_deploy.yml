@@ -1,0 +1,69 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches: [ v2.4.x-release ]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: meteorengineer/setup-meteor@v1.0.3
+    - uses: mikefarah/yq@master
+      with:
+        cmd: yq e '.kurento.wsUrl = "wss://${{ secrets.HOST }}/bbb-webrtc-sfu"' -i bigbluebutton-html5/private/config/settings.yml
+    - run: meteor npm ci --production
+      working-directory: ./bigbluebutton-html5
+    - name: Buid
+      run: METEOR_DISABLE_OPTIMISTIC_CACHING=1 meteor build ./meteorbundle --architecture os.linux.x86_64 --allow-superuser --directory
+      working-directory: ./bigbluebutton-html5
+    - name: cp files
+      run: |
+        cp ./build/packages-template/bbb-html5/mongod_start_pre.sh ./bigbluebutton-html5/meteorbundle/bundle/mongod_start_pre.sh
+        cp ./build/packages-template/bbb-html5/bionic/mongo-ramdisk.conf ./bigbluebutton-html5/meteorbundle/bundle/mongo-ramdisk.conf
+        cp ./build/packages-template/bbb-html5/bionic/systemd_start.sh ./bigbluebutton-html5/meteorbundle/bundle/systemd_start.sh
+        cp ./build/packages-template/bbb-html5/bionic/systemd_start_frontend.sh ./bigbluebutton-html5/meteorbundle/bundle/systemd_start_frontend.sh
+        cp ./build/packages-template/bbb-html5/bionic/workers-start.sh ./bigbluebutton-html5/meteorbundle/bundle/workers-start.sh
+    - name: create config
+      run: |
+        tee ./bigbluebutton-html5/meteorbundle/bundle/bbb-html5-with-roles.conf >/dev/null <<HERE
+        # Default = 2; Min = 1; Max = 4
+        # On powerful systems with high number of meetings you can set values up to 4 to accelerate handling of events
+        NUMBER_OF_BACKEND_NODEJS_PROCESSES=2
+        # Default = 2; Min = 0; Max = 8
+        # If 0 is set, bbb-html5 will handle both backend and frontend roles in one process (default until Feb 2021)
+        # Set a number between 1 and 4 times the value of NUMBER_OF_BACKEND_NODEJS_PROCESSES where higher number helps with meetings
+        # stretching the recommended number of users in BigBlueButton
+        NUMBER_OF_FRONTEND_NODEJS_PROCESSES=2
+
+        HERE
+    - name: chmod
+      run: |
+        chmod +x ./bigbluebutton-html5/meteorbundle/bundle/mongod_start_pre.sh
+        chmod +x ./bigbluebutton-html5/meteorbundle/bundle/systemd_start.sh
+        chmod +x ./bigbluebutton-html5/meteorbundle/bundle/systemd_start_frontend.sh
+        chmod +x ./bigbluebutton-html5/meteorbundle/bundle/workers-start.sh
+    - run: tar -zcf ./bigbluebutton-html5.tar.gz ./bundle/
+      working-directory: ./bigbluebutton-html5/meteorbundle
+    - uses: actions/upload-artifact@v2
+      with:
+        name: result
+        path: bigbluebutton-html5/meteorbundle/bigbluebutton-html5.tar.gz
+        
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: result
+    - name: Set secret
+      run: |
+        echo "${{ secrets.KEY }}" > secret_key
+        chmod 600 secret_key
+    - name: Deploy
+      run: |
+        scp -o "StrictHostKeyChecking=no" -i secret_key bigbluebutton-html5.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
+        ssh -o "StrictHostKeyChecking=no" -i secret_key ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'echo ${{ secrets.PASS }} | sudo -S tar -zxf ~/bigbluebutton-html5.tar.gz -C /usr/share/meteor && (cd /usr/share/meteor/bundle/programs/server && sudo npm i) && rm -f ~/bigbluebutton-html5.tar.gz && sudo systemctl restart bbb-html5'
