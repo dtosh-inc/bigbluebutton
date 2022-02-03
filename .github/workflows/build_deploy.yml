@@ -3,8 +3,6 @@ name: Build & Deploy
 on:
   push:
     branches: [ v2.4.x-release ]
-  pull_request:
-    branches: [ v2.4.x-release ]
 
 jobs:
   build:
