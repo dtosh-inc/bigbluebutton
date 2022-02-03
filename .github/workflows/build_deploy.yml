@@ -16,8 +16,7 @@ jobs:
     - run: meteor npm ci --production
       working-directory: ./bigbluebutton-html5
     - name: Buid
-      run: meteor build --server-only ./meteorbundle
-#       run: METEOR_DISABLE_OPTIMISTIC_CACHING=1 meteor build ./meteorbundle --architecture os.linux.x86_64 --allow-superuser --directory
+      run: METEOR_DISABLE_OPTIMISTIC_CACHING=1 meteor build ./meteorbundle --architecture os.linux.x86_64 --allow-superuser --directory
       working-directory: ./bigbluebutton-html5
 #     - name: cp files
 #       run: |
@@ -45,7 +44,8 @@ jobs:
 #         chmod +x ./bigbluebutton-html5/meteorbundle/bundle/systemd_start.sh
 #         chmod +x ./bigbluebutton-html5/meteorbundle/bundle/systemd_start_frontend.sh
 #         chmod +x ./bigbluebutton-html5/meteorbundle/bundle/workers-start.sh
-#     - run: tar -zcf ./bigbluebutton-html5/meteorbundle/bigbluebutton-html5.tar.gz ./bigbluebutton-html5/meteorbundle/bundle/
+    - run: tar -zcf ./bigbluebutton-html5.tar.gz ./bundle/
+      working-directory: ./bigbluebutton-html5/meteorbundle
     - uses: actions/upload-artifact@v2
       with:
         name: result
