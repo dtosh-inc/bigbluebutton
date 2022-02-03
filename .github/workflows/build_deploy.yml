@@ -13,6 +13,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: meteorengineer/setup-meteor@v1.0.3
+    - uses: mikefarah/yq@master
+      with:
+        cmd: yq w -i bigbluebutton-html5/private/config/settings.yml kurento.wsUrl wss://${{ secrets.HOST }}/bbb-webrtc-sfu
     - run: meteor npm ci --production
       working-directory: ./bigbluebutton-html5
     - name: Buid
@@ -65,4 +68,4 @@ jobs:
     - name: Deploy
       run: |
         scp -o "StrictHostKeyChecking=no" -i secret_key bigbluebutton-html5.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
-        ssh -o "StrictHostKeyChecking=no" -i secret_key ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'echo ${{ secrets.PASS }} | sudo -S tar -zxf ~/bigbluebutton-html5.tar.gz -C /usr/share/meteor && rm -f ~/bigbluebutton-html5.tar.gz'
+        ssh -o "StrictHostKeyChecking=no" -i secret_key ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'echo ${{ secrets.PASS }} | sudo -S tar -zxf ~/bigbluebutton-html5.tar.gz -C /usr/share/meteor　&& (cd /usr/share/meteor/bundle/programs/server && sudo npm i) && rm -f ~/bigbluebutton-html5.tar.gz'
