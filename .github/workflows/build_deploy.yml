@@ -15,7 +15,7 @@ jobs:
     - uses: meteorengineer/setup-meteor@v1.0.3
     - uses: mikefarah/yq@v4.18.1
       with:
-        cmd: yq write -i bigbluebutton-html5/private/config/settings.yml .kurento.wsUrl wss://${{ secrets.HOST }}/bbb-webrtc-sfu
+        cmd: yq e .kurento.wsUrl -i bigbluebutton-html5/private/config/settings.yml wss://${{ secrets.HOST }}/bbb-webrtc-sfu
     - run: meteor npm ci --production
       working-directory: ./bigbluebutton-html5
     - name: Buid
