@@ -3,17 +3,20 @@ name: Build & Deploy
 on:
   push:
     branches: [ v2.4.x-release ]
+    
+
 
 jobs:
   build:
     runs-on: ubuntu-18.04
-
+    environment: production
+#     environment: staging
     steps:
     - uses: actions/checkout@v2
-    - uses: meteorengineer/setup-meteor@v1.0.3
     - uses: mikefarah/yq@master
       with:
-        cmd: yq e '.kurento.wsUrl = "wss://${{ secrets.HOST }}/bbb-webrtc-sfu"' -i bigbluebutton-html5/private/config/settings.yml
+        cmd: yq -i '.public.kurento.wsUrl = "wss://${{ secrets.HOST }}/bbb-webrtc-sfu"' bigbluebutton-html5/private/config/settings.yml
+    - uses: meteorengineer/setup-meteor@v1
     - run: meteor npm ci --production
       working-directory: ./bigbluebutton-html5
     - name: Buid
@@ -54,6 +57,8 @@ jobs:
         
   deploy:
     runs-on: ubuntu-latest
+    environment: production
+#     environment: staging
     needs: build
     steps:
     - uses: actions/download-artifact@v2
@@ -63,7 +68,18 @@ jobs:
       run: |
         echo "${{ secrets.KEY }}" > secret_key
         chmod 600 secret_key
+    - name: Set script
+      run: |
+        tee script.sh >/dev/null <<HERE
+        #!/bin/sh
+        echo ${{ secrets.PASS }} | sudo -S tar -zxf ~/bigbluebutton-html5.tar.gz -C /usr/share/meteor
+        (cd /usr/share/meteor/bundle/programs/server && sudo npm i)
+        rm -f ~/bigbluebutton-html5.tar.gz
+        sudo systemctl restart bbb-html5
+        
+        HERE
+        chmod +x script.sh
     - name: Deploy
       run: |
-        scp -o "StrictHostKeyChecking=no" -i secret_key bigbluebutton-html5.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
-        ssh -t -o "StrictHostKeyChecking=no" -i secret_key ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'echo ${{ secrets.PASS }} | sudo -S tar -zxf ~/bigbluebutton-html5.tar.gz -C /usr/share/meteor && (cd /usr/share/meteor/bundle/programs/server && sudo npm i) && rm -f ~/bigbluebutton-html5.tar.gz && sudo systemctl restart bbb-html5'
+        scp -o "StrictHostKeyChecking=no" -i secret_key bigbluebutton-html5.tar.gz ${{ secrets.USER }}@${{ secrets.HOST }}:~/
+        ssh -o "StrictHostKeyChecking=no" -i secret_key ${{ secrets.USER }}@${{ secrets.HOST }} 'sh ' < script.sh
