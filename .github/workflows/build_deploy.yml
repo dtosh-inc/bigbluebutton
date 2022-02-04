@@ -69,7 +69,17 @@ jobs:
       run: |
         echo "${{ secrets.KEY }}" > secret_key
         chmod 600 secret_key
+    - name: Set script
+      run: |
+        tee script.sh >/dev/null <<HERE
+        #!/bin/sh
+        tar -zxf ~/bigbluebutton-html5.tar.gz -C /usr/share/meteor
+        (cd /usr/share/meteor/bundle/programs/server && npm i)
+        rm -f ~/bigbluebutton-html5.tar.gz
+        #systemctl restart bbb-html5
+        
+        HERE
     - name: Deploy
       run: |
         scp -o "StrictHostKeyChecking=no" -i secret_key bigbluebutton-html5.tar.gz ${{ secrets.USER }}@${{ secrets.HOST }}:~/
-        ssh -o "StrictHostKeyChecking=no" -i secret_key ${{ secrets.USER }}@${{ secrets.HOST }} 'echo ${{ secrets.PASS }} | sudo -S tar -zxf ~/bigbluebutton-html5.tar.gz -C /usr/share/meteor && (cd /usr/share/meteor/bundle/programs/server && sudo npm i) && rm -f ~/bigbluebutton-html5.tar.gz && sudo systemctl restart bbb-html5'
+        ssh -o "StrictHostKeyChecking=no" -i secret_key ${{ secrets.USER }}@${{ secrets.HOST }} 'echo ${{ secrets.PASS }} | sudo -S sh ' < script.sh
