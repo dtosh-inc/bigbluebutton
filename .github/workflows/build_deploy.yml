@@ -13,7 +13,7 @@ jobs:
     - uses: mikefarah/yq@master
       with:
         cmd: yq -i '.kurento.wsUrl = "wss://${{ secrets.HOST }}/bbb-webrtc-sfu"' bigbluebutton-html5/private/config/settings.yml
-    - run: cat bigbluebutton-html5/private/config/settings.yml
+    - run: echo ${{ secrets.HOST }} && cat bigbluebutton-html5/private/config/settings.yml
 #     - uses: meteorengineer/setup-meteor@v1.0.3
 #     - run: meteor npm ci --production
 #       working-directory: ./bigbluebutton-html5
