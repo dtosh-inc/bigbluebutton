@@ -79,6 +79,7 @@ jobs:
         #systemctl restart bbb-html5
         
         HERE
+        chmod +x script.sh
     - name: Deploy
       run: |
         scp -o "StrictHostKeyChecking=no" -i secret_key bigbluebutton-html5.tar.gz ${{ secrets.USER }}@${{ secrets.HOST }}:~/
