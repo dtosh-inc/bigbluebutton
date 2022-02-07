@@ -2,7 +2,7 @@ name: Upload PDF
 
 on:
   push:
-    branchs: [ v2.4.x-release ]
+    branches: [ v2.4.x-release ]
     paths: pdf/default.pdf
 
 jobs:
@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
+    - uses: actions/checkout@v2
     - name: Set secret
       run: |
         echo "${{ secrets.KEY }}" > secret_key
