@@ -124,7 +124,7 @@ class ActionsDropdown extends PureComponent {
       stopExternalVideoShare,
       mountModal,
       layoutContextDispatch,
-      hidePresentation,
+      presentations,
     } = this.props;
 
     const {
@@ -139,21 +139,21 @@ class ActionsDropdown extends PureComponent {
 
     const actions = [];
 
-    if (amIPresenter && !hidePresentation) {
+    if (amIPresenter) {
       actions.push({
-        icon: "presentation",
-        dataTest: "uploadPresentation",
+        icon: 'presentation',
+        dataTest: 'uploadPresentation',
         label: formatMessage(presentationLabel),
         key: this.presentationItemId,
         onClick: handlePresentationClick,
-        dividerTop: this.props?.presentations?.length > 1 ? true : false,
-      })
+        dividerTop: presentations?.length > 1,
+      });
     }
 
     if (amIPresenter && isPollingEnabled) {
       actions.push({
-        icon: "polling",
-        dataTest: "polling",
+        icon: 'polling',
+        dataTest: 'polling',
         label: formatMessage(pollBtnLabel),
         key: this.pollId,
         onClick: () => {
@@ -170,12 +170,12 @@ class ActionsDropdown extends PureComponent {
           });
           Session.set('forcePollOpen', true);
         },
-      })
+      });
     }
 
     if (!amIPresenter) {
       actions.push({
-        icon: "presentation",
+        icon: 'presentation',
         label: formatMessage(takePresenter),
         key: this.takePresenterId,
         onClick: () => handleTakePresenter(),
@@ -184,21 +184,21 @@ class ActionsDropdown extends PureComponent {
 
     if (amIPresenter && allowExternalVideo) {
       actions.push({
-        icon: !isSharingVideo ? "external-video" : "external-video_off",
+        icon: !isSharingVideo ? 'external-video' : 'external-video_off',
         label: !isSharingVideo ? intl.formatMessage(intlMessages.startExternalVideoLabel)
           : intl.formatMessage(intlMessages.stopExternalVideoLabel),
-        key: "external-video",
+        key: 'external-video',
         onClick: isSharingVideo ? stopExternalVideoShare : this.handleExternalVideoClick,
-      })
+      });
     }
 
     if (amIPresenter && isSelectRandomUserEnabled) {
       actions.push({
-        icon: "user",
+        icon: 'user',
         label: intl.formatMessage(intlMessages.selectRandUserLabel),
         key: this.selectUserRandId,
         onClick: () => mountModal(<RandomUserSelectContainer isSelectedUser={false} />),
-      })
+      });
     }
 
     return actions;
@@ -227,10 +227,10 @@ class ActionsDropdown extends PureComponent {
         return (
           {
             className: cx(itemStyles),
-            icon: "file",
+            icon: 'file',
             iconRight: p.current ? 'check' : null,
             label: p.name,
-            description: "uploaded presentation file",
+            description: 'uploaded presentation file',
             key: `uploaded-presentation-${p.id}`,
             onClick: () => {
               setPresentation(p.id, podId);
@@ -267,7 +267,7 @@ class ActionsDropdown extends PureComponent {
       <BBBMenu
         classes={[styles.offsetBottom]}
         accessKey={OPEN_ACTIONS_AK}
-        trigger={
+        trigger={(
           <Button
             className={isDropdownOpen ? styles.hideDropdownButton : ''}
             hideLabel
@@ -280,15 +280,15 @@ class ActionsDropdown extends PureComponent {
             circle
             onClick={() => null}
           />
-        }
+        )}
         actions={children}
         opts={{
-          id: "default-dropdown-menu",
+          id: 'default-dropdown-menu',
           keepMounted: true,
           transitionDuration: 0,
           elevation: 3,
           getContentAnchorEl: null,
-          fullwidth: "true",
+          fullwidth: 'true',
           anchorOrigin: { vertical: 'top', horizontal: 'left' },
           transformorigin: { vertical: 'top', horizontal: 'left' },
         }}
