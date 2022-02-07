@@ -3,8 +3,7 @@ name: Build & Deploy
 on:
   push:
     branches: [ v2.4.x-release ]
-    
-
+    paths: bigbluebutton-html5/**
 
 jobs:
   build:

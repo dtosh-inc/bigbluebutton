@@ -1,0 +1,20 @@
+name: Upload PDF
+
+on:
+  push:
+    branchs: [ v2.4.x-release ]
+    paths: pdf/default.pdf
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+    - name: Set secret
+      run: |
+        echo "${{ secrets.KEY }}" > secret_key
+        chmod 600 secret_key
+    - name: Upload
+      run: |
+        scp -o "StrictHostKeyChecking=no" -i secret_key ./pdf/default.pdf ${{ secrets.USER }}@${{ secrets.HOST }}:~/
+        ssh -o "StrictHostKeyChecking=no" -i secret_key ${{ secrets.USER }}@${{ secrets.HOST }} 'echo ${{ secrets.PASS }} | sudo -S mv ~/default.pdf /var/www/bigbluebutton-default/'
