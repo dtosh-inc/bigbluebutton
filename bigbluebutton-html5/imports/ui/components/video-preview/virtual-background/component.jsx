@@ -12,6 +12,7 @@ import {
   isVirtualBackgroundSupported,
 } from '/imports/ui/services/virtual-background/service';
 import { capitalizeFirstLetter } from '/imports/utils/string-utils';
+import deviceInfo from '/imports/utils/deviceInfo';
 
 const propTypes = {
   intl: PropTypes.shape({
@@ -226,12 +227,18 @@ const VirtualBgSelector = ({
     return renderDropdownSelector();
   };
 
+  const getLabel = () => {
+    if (!isVirtualBackgroundSupported()) {
+      return deviceInfo.isIOS ? 'iOSは背景画像の変更に対応しておりません' : 'Safariは背景画像の変更に対応しておりません';
+    }
+
+    return intl.formatMessage(intlMessages.virtualBackgroundSettingsLabel);
+  };
+
   return (
     <>
       <label className={styles.label}>
-        {!isVirtualBackgroundSupported()
-          ? intl.formatMessage(intlMessages.virtualBackgroundSettingsDisabledLabel)
-          : intl.formatMessage(intlMessages.virtualBackgroundSettingsLabel)}
+        {getLabel()}
       </label>
 
       {renderSelector()}
