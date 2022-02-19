@@ -1,7 +1,7 @@
 #!/bin/bash
 NAME="bbb-dev-01"  # change here if you want a different name
 HOSTNAME="${NAME}.test"
-IMAGE=imdt/bigbluebutton:2.4.x-develop
+IMAGE=imdt/bigbluebutton:2.4.x-develop_build_486
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
 # retag the commit to force a lookup but keep in cache
