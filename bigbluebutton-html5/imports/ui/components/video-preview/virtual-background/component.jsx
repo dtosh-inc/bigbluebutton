@@ -229,7 +229,7 @@ const VirtualBgSelector = ({
 
   const getLabel = () => {
     if (!isVirtualBackgroundSupported()) {
-      return deviceInfo.isIOS ? 'iOSは背景画像の変更に対応しておりません' : 'Safariは背景画像の変更に対応しておりません';
+      return deviceInfo.isIos ? 'iOS, iPadOSは背景画像の変更に対応しておりません' : 'Safariは背景画像の変更に対応しておりません';
     }
 
     return intl.formatMessage(intlMessages.virtualBackgroundSettingsLabel);
